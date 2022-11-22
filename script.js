@@ -100,16 +100,26 @@ const UIController = (function() {
         divSonglist: '.song-list'
     }
 
-     _getRecommendation = async () => {
+     // Scopes
+    var scope = 'user-read-private user-read-email user-read-playback-state';
 
-        const limit = 1;
-        
-        const result = await fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=ES&seed_genres=classical%2Ccountry&seed`, {
-            method: 'GET',
-        });
+    // Function
+    getRecommendations() {
+        var data = {
+            seed_genres: [
+                'classical',
+                'country'
+            ],
+        };
 
-        const data = await result.json();
-        return data.items;
+        spotifyWebApi.getRecommendations(data).then((response) => {
+            this.setState({
+                nowPlaying: {
+                    test: response.tracks,
+                }
+            })
+
+        })
     }
 
 
