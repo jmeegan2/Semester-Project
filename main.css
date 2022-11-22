@@ -23,7 +23,8 @@ img {
 }
 
 .btn-success {
-    background-color: #3b7d4a!important;
+    /* background-color: #3b7d4a!important; */
+    background-color: red;
 }
 
 .btn-success:hover {
