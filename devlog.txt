@@ -1,0 +1,5 @@
+Get recommendations OA authorization token : BQB1_UmACbtLiRK7y-0s4KVaS6I1L-0Qx3SAal-o7a3LymTxYntl3qf2NVeYhsgL_a-EQJ6ZsrLGaPDWUgm-EqoR8ayYs-XUqkhDjo_Lh_wqG5aLRC9PS8a2cfhzn0_xtuoFBwGVEXHqiTHeOOB61VRSkbrPVrnbo6NOtLVbVjbQNc-KypLY
+
+*11/22
+-Work on API 
+-Use get recommendations command to get songs
