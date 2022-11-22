@@ -100,6 +100,19 @@ const UIController = (function() {
         divSonglist: '.song-list'
     }
 
+     _getRecommendation = async () => {
+
+        const limit = 1;
+        
+        const result = await fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=ES&seed_genres=classical%2Ccountry&seed`, {
+            method: 'GET',
+        });
+
+        const data = await result.json();
+        return data.items;
+    }
+
+
     //public methods
     return {
 
