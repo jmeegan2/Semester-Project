@@ -82,6 +82,7 @@ const APIController = (function() {
         
         const data = await result.json();
         console.log(data);
+        displaySong(data);
         return data.tracks;
     }
 
@@ -310,6 +311,21 @@ const APPController = (function(UICtrl, APICtrl) {
 
 })(UIController, APIController);
 
+
+function displaySong(data) {
+    const specificSong = data.specificSong;
+    const quoteDiv = document.getElementById("specificSong");
+  
+
+  const songName = '"'+specificSong+'"';
+  const heading = document.createElement("p");
+
+  heading.innerHTML = songName;
+  quoteDiv.appendChild(heading);
+
+
+
+  }
 // will need to call a method to load the genres on page load
 APPController.init();
 
