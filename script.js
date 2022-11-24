@@ -156,6 +156,12 @@ const UIController = (function() {
             document.querySelector(DOMElements.divSonglist).insertAdjacentHTML('beforeend', html);
         },
 
+        
+        createSong(id, name) {
+            const html = `<a href="#" class="list-group-item list-group-item-action list-group-item-light" id="${id}">${name}</a>`;
+            document.querySelector(DOMElements.selectedSong).insertAdjacentHTML('beforeend', html);
+        },
+        
         // need method to create the song detail
         createTrackDetail(img, title, artist) {
 
@@ -244,6 +250,8 @@ const APPController = (function(UICtrl, APICtrl) {
         const playlist = await APICtrl.getPlaylistByGenre(token, genreId);       
         // create a playlist list item for every playlist returned
         playlist.forEach(p => UICtrl.createPlaylist(p.name, p.tracks.href));
+        // get the specific from get recommendations function
+        const song = UICtrl.inputField().selectedSong;
     });
      
 
