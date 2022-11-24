@@ -71,7 +71,7 @@ const APIController = (function() {
     }
 
     const _getRecommendation = async (token, genresRecommend) => {
-        const limit = 1;
+        const limit = 10;
         
         const result = await fetch(`https://api.spotify.com/v1/recommendations?limit=${limit}&market=ES&seed_genres=${genresRecommend}`, {
             method: 'GET',
