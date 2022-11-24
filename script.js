@@ -70,12 +70,13 @@ const APIController = (function() {
         return data;
     }
 
-    const _getRecommendation = async (genresRecommend) => {
+    const _getRecommendation = async (token, genresRecommend) => {
 
         const limit = 1;
         
         const result = await fetch(`https://api.spotify.com/v1/recommendations?limit=${limit}&market=ES&seed_genres=${genresRecommend}`, {
             method: 'GET',
+            headers: { 'Authorization' : 'Bearer ' + token}
         });
 
         const data = await result.json();
@@ -98,8 +99,8 @@ const APIController = (function() {
         getTrack(token, trackEndPoint) {
             return _getTrack(token, trackEndPoint);
         },
-        getRecommendation(genresRecommend){
-            return _getRecommendation(genresRecommend);
+        getRecommendation(token, genresRecommend){
+            return _getRecommendation(token, genresRecommend);
         }
     }
 })();
