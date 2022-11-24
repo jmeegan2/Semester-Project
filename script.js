@@ -81,7 +81,8 @@ const APIController = (function() {
             
         
         const data = await result.json();
-        return data.playlists.items;
+        console.log(data);
+        return data;
     }
 
     return {
@@ -109,7 +110,7 @@ const APIController = (function() {
 
 // UI Module
 const UIController = (function() {
-
+    const genresRecommend ='electronic';
     //object to hold references to html selectors
     const DOMElements = {
         selectGenre: '#select_genre',
@@ -220,7 +221,7 @@ const UIController = (function() {
 })();
 
 const APPController = (function(UICtrl, APICtrl) {
-
+    const genresRecommend ='electronic';
     // get input field object ref
     const DOMInputs = UICtrl.inputField();
 
@@ -278,6 +279,7 @@ const APPController = (function(UICtrl, APICtrl) {
         const tracks = await APICtrl.getTracks(token, tracksEndPoint);
         // create a track list item
         tracks.forEach(el => UICtrl.createTrack(el.track.href, el.track.name))
+        
         
     });
 
