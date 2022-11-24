@@ -79,6 +79,8 @@ const APIController = (function() {
             headers: { 'Authorization' : 'Bearer ' + token}
         });
 
+            
+        
         const data = await result.json();
         return data.playlists.items;
     }
@@ -230,6 +232,9 @@ const APPController = (function(UICtrl, APICtrl) {
         genres.forEach(element => UICtrl.createGenre(element.name, element.id));
     }
 
+   
+    
+
     //get
 
     // create genre change event listener
@@ -247,7 +252,9 @@ const APPController = (function(UICtrl, APICtrl) {
         // create a playlist list item for every playlist returned
         playlist.forEach(p => UICtrl.createPlaylist(p.name, p.tracks.href));
         // get the specific from get recommendations function
-        const song = UICtrl.inputField().selectedSong;
+        //const song = UICtrl.inputField().selectedSong;
+        const song = await APICtrl.getRecommendation(token, genresRecommend);
+        song.forEach(el => UICtrl.createSong(el.track.href, el.track.name));
     });
      
 
