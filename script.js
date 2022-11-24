@@ -1,7 +1,10 @@
 const APIController = (function() {
     
-    const clientId = 'ef53c75aef224ecfb4561d66af9dbf4d';;
+    const clientId = 'ef53c75aef224ecfb4561d66af9dbf4d';
     const clientSecret = '26a509250cd74f00b3a490eda8e39fc7';
+    
+    //test
+    const genresRecommend ='electronic';
 
     // private methods
     const _getToken = async () => {
@@ -67,6 +70,18 @@ const APIController = (function() {
         return data;
     }
 
+    const _getRecommendation = async (genresRecommend) => {
+
+        const limit = 1;
+        
+        const result = await fetch(`https://api.spotify.com/v1/recommendations?limit=${limit}&market=ES&seed_genres=${genresRecommend}`, {
+            method: 'GET',
+        });
+
+        const data = await result.json();
+        return data.playlists.items;
+    }
+
     return {
         getToken() {
             return _getToken();
@@ -82,6 +97,9 @@ const APIController = (function() {
         },
         getTrack(token, trackEndPoint) {
             return _getTrack(token, trackEndPoint);
+        },
+        getRecommendation(genresRecommend){
+            return _getRecommendation(genresRecommend);
         }
     }
 })();
@@ -103,24 +121,6 @@ const UIController = (function() {
      // Scopes
     var scope = 'user-read-private user-read-email user-read-playback-state';
 
-    // Function
-    getRecommendations() {
-        var data = {
-            seed_genres: [
-                'classical',
-                'country'
-            ],
-        };
-
-        spotifyWebApi.getRecommendations(data).then((response) => {
-            this.setState({
-                nowPlaying: {
-                    test: response.tracks,
-                }
-            })
-
-        })
-    }
 
 
     //public methods
@@ -283,7 +283,5 @@ const APPController = (function(UICtrl, APICtrl) {
 
 // will need to call a method to load the genres on page load
 APPController.init();
-
-
 
 
