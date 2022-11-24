@@ -258,9 +258,10 @@ const APPController = (function(UICtrl, APICtrl) {
     DOMInputs.theSong.addEventListener('click', async () => {
         const token = UICtrl.getStoredToken().token; 
         const song = await APICtrl.getRecommendation(token, genresRecommend);
+        console.log(song);
         console.log(song[0].name);
-        song.UICtrl.createSong(song[0].id, song[0].name);
-        //song.forEach(yo => UICtrl.createSong(yo.track.href, yo.track.name));
+        //song.UICtrl.createSong(song[0].href, song[0].name);
+        song.forEach(yo => UICtrl.createSong(yo.href, yo.name));
 
     });
 
