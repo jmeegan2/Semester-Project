@@ -3,8 +3,8 @@ const APIController = (function() {
     const clientId = 'ef53c75aef224ecfb4561d66af9dbf4d';
     const clientSecret = '26a509250cd74f00b3a490eda8e39fc7';
     
-    //test
-    const genresRecommend ='electronic';
+    // //test
+    // const genresRecommend ='electronic';
 
     // private methods
     const _getToken = async () => {
@@ -71,7 +71,8 @@ const APIController = (function() {
     }
 
     const _getRecommendation = async (token, genresRecommend) => {
-
+    //test variables
+    const genresRecommend ='electronic';
         const limit = 1;
         
         const result = await fetch(`https://api.spotify.com/v1/recommendations?limit=${limit}&market=ES&seed_genres=${genresRecommend}`, {
@@ -116,7 +117,8 @@ const UIController = (function() {
         buttonSubmit: '#btn_submit',
         divSongDetail: '#song-detail',
         hfToken: '#hidden_token',
-        divSonglist: '.song-list'
+        divSonglist: '.song-list',
+        selectedSong: 'selected_song'
     }
 
      // Scopes
@@ -134,7 +136,8 @@ const UIController = (function() {
                 playlist: document.querySelector(DOMElements.selectPlaylist),
                 tracks: document.querySelector(DOMElements.divSonglist),
                 submit: document.querySelector(DOMElements.buttonSubmit),
-                songDetail: document.querySelector(DOMElements.divSongDetail)
+                songDetail: document.querySelector(DOMElements.divSongDetail),
+                selectedSong: document.querySelector(DOMElements.selectedSong)
             }
         },
 
@@ -221,6 +224,8 @@ const APPController = (function(UICtrl, APICtrl) {
         //populate our genres select element
         genres.forEach(element => UICtrl.createGenre(element.name, element.id));
     }
+
+    //get
 
     // create genre change event listener
     DOMInputs.genre.addEventListener('change', async () => {
