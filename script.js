@@ -82,7 +82,7 @@ const APIController = (function() {
         
         const data = await result.json();
         console.log(data);
-        return data;
+        return data.tracks;
     }
 
     return {
@@ -119,7 +119,7 @@ const UIController = (function() {
         divSongDetail: '#song-detail',
         hfToken: '#hidden_token',
         divSonglist: '.song-list',
-        selectedSong: 'selected_song'
+        selectedSong: '#selected_song',
     }
 
      // Scopes
@@ -127,7 +127,7 @@ const UIController = (function() {
 
 
 
-    //public methods
+    //public methods 
     return {
 
         //method to get input fields
@@ -138,7 +138,7 @@ const UIController = (function() {
                 tracks: document.querySelector(DOMElements.divSonglist),
                 submit: document.querySelector(DOMElements.buttonSubmit),
                 songDetail: document.querySelector(DOMElements.divSongDetail),
-                selectedSong: document.querySelector(DOMElements.selectedSong)
+                theSong: document.querySelector(DOMElements.selectedSong)
             }
         },
 
@@ -161,7 +161,7 @@ const UIController = (function() {
 
         
         createSong(id, name) {
-            const html = `<a href="#" class="list-group-item list-group-item-action list-group-item-light" id="${id}">${name}</a>`;
+            const html = `<option value="${id}">${name}</option>`;
             document.querySelector(DOMElements.selectedSong).insertAdjacentHTML('beforeend', html);
         },
         
@@ -186,11 +186,6 @@ const UIController = (function() {
             `;
 
             detailDiv.insertAdjacentHTML('beforeend', html)
-        },
-
-        createSong(id, name) {
-            const html = `<a href="#" class="list-group-item list-group-item-action list-group-item-light" id="${id}">${name}</a>`;
-            document.querySelector(DOMElements.selectedSong).insertAdjacentHTML('beforeend', html);
         },
 
         resetTrackDetail() {
@@ -256,12 +251,18 @@ const APPController = (function(UICtrl, APICtrl) {
         const playlist = await APICtrl.getPlaylistByGenre(token, genreId);       
         // create a playlist list item for every playlist returned
         playlist.forEach(p => UICtrl.createPlaylist(p.name, p.tracks.href));
-        // get the specific from get recommendations function
-        //const song = UICtrl.inputField().selectedSong;
-        const song = await APICtrl.getRecommendation(token, genresRecommend);
-        song.forEach(el => UICtrl.createSong(el.track.href, el.track.name));
+
+    
     });
-     
+    
+    DOMInputs.theSong.addEventListener('click', async () => {
+        const token = UICtrl.getStoredToken().token; 
+        const song = await APICtrl.getRecommendation(token, genresRecommend);
+        console.log(song[0].name);
+        song.UICtrl.createSong(song[0].id, song[0].name);
+        //song.forEach(yo => UICtrl.createSong(yo.track.href, yo.track.name));
+
+    });
 
     // create submit button click event listener
     DOMInputs.submit.addEventListener('click', async (e) => {
@@ -278,6 +279,7 @@ const APPController = (function(UICtrl, APICtrl) {
         // get the list of tracks
         const tracks = await APICtrl.getTracks(token, tracksEndPoint);
         // create a track list item
+        console.log(tracks);
         tracks.forEach(el => UICtrl.createTrack(el.track.href, el.track.name))
         
         
