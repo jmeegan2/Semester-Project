@@ -3,7 +3,7 @@ const APIController = (function() {
     const clientId = 'ef53c75aef224ecfb4561d66af9dbf4d';
     const clientSecret = '26a509250cd74f00b3a490eda8e39fc7';
     
-    //test
+    // //test
     const genresRecommend ='electronic';
 
     // private methods
@@ -71,7 +71,6 @@ const APIController = (function() {
     }
 
     const _getRecommendation = async (token, genresRecommend) => {
-    
         const limit = 1;
         
         const result = await fetch(`https://api.spotify.com/v1/recommendations?limit=${limit}&market=ES&seed_genres=${genresRecommend}`, {
@@ -186,6 +185,11 @@ const UIController = (function() {
             `;
 
             detailDiv.insertAdjacentHTML('beforeend', html)
+        },
+
+        createSong(id, name) {
+            const html = `<a href="#" class="list-group-item list-group-item-action list-group-item-light" id="${id}">${name}</a>`;
+            document.querySelector(DOMElements.selectedSong).insertAdjacentHTML('beforeend', html);
         },
 
         resetTrackDetail() {
