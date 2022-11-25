@@ -5,8 +5,8 @@
 
 span.caret {
     position: absolute;
-    left: 90%;
-    top: 45%;
+    left: 50%;
+    top: 50%;
 }
 
 label {

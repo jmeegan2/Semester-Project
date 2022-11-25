@@ -21,7 +21,7 @@ const APIController = (function() {
     }
     
     const _getRecommendation = async (token, genresRecommend) => {
-        const limit = 1;
+        let limit = prompt("Put in a limit amount: ");
         
         const result = await fetch(`https://api.spotify.com/v1/recommendations?limit=${limit}&market=ES&seed_genres=${genresRecommend}`, {
             method: 'GET',
