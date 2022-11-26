@@ -142,8 +142,13 @@ const APPController = (function(UICtrl, APICtrl) {
           // Search for exact match in `prompts`
           product = compare(prompts, replies, text);
         } else if (text.match(/(electronic|acoustic|rock|rap|hiphop|classical|country|indie|romance|jazz|soul)/gi)) {
-          product = "You chose Genre: "+product;
-          genresRecommend = product;
+            product = "You chose Genre: "+text;
+            if(genresRecommend!=null){
+              genresRecommend = genresRecommend.concat(",",text);
+            }
+            else{
+              genresRecommend = text;
+            }
         } else if (text.match(/(corona|covid|virus)/gi)) {
           // If no match, check if message contains `coronavirus`
           product = coronavirus[Math.floor(Math.random() * coronavirus.length)];
