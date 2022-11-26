@@ -106,6 +106,8 @@ const APPController = (function(UICtrl, APICtrl) {
     return {
         init() {
             console.log('App is starting');
+            addChat("","Hello Im the Chatbot Song Recommender, would you like recommendations (yes or no)");
+            
         }
     }
 
