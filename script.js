@@ -236,7 +236,7 @@ const APPController = (function(UICtrl, APICtrl) {
     return {
         init() {
             console.log('App is starting');
-            addChatBotOnly("Hello Im the Chatbot Song Recommender, would you like recommendations (yes or no)");
+            addChatBotOnly("Hello, I am the Chatbot Song Recommender, would you like song recommendations?");
             
         }
     }
