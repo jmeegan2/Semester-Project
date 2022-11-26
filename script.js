@@ -87,6 +87,7 @@ const UIController = (function() {
 
 const APPController = (function(UICtrl, APICtrl) {
     const DOMInputs = UICtrl.inputField();
+    genresRecommend = null;
     /*
     DOMInputs.theSong.addEventListener('click', async () => {
         //get the token
@@ -149,10 +150,8 @@ const APPController = (function(UICtrl, APICtrl) {
             else{
               genresRecommend = text;
             }
-        } else if (text.match(/(corona|covid|virus)/gi)) {
-          // If no match, check if message contains `coronavirus`
-          product = coronavirus[Math.floor(Math.random() * coronavirus.length)];
-        } else {
+        } 
+        else {
           // If all else fails: random alternative
           product = alternative[Math.floor(Math.random() * alternative.length)];
         }

@@ -19,10 +19,7 @@ const alternative = [
   "I don't understand :/"
 ]
 
-// Whatever else you want :)
-
-const coronavirus = ["Please stay home", "Wear a mask", "Fortunately, I don't have COVID", "These are uncertain times"]
-
+//list of genres
 const genreList = [
   ["electronic"],
   ["acoustic"],
