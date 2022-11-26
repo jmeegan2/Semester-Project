@@ -23,11 +23,16 @@ const alternative = [
 
 const coronavirus = ["Please stay home", "Wear a mask", "Fortunately, I don't have COVID", "These are uncertain times"]
 
-const genreQuestions = [
-  
-
-
-
-
-
+const genreList = [
+  ["electronic"],
+  ["acoustic"],
+  ["rock"],
+  ["rap"],
+  ["hiphop", "hip hop"],
+  ["classical"],
+  ["country"],
+  ["indie"],
+  ["romance"],
+  ["jazz"],
+  ["soul"]
 ]
