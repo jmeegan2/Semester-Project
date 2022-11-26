@@ -7,7 +7,7 @@ const prompts = [
 // Possible responses, in corresponding order
 
 const replies = [
-  ["Ok, lets begin!"],
+  ["Ok, lets begin!, What genre would you like? "],
   ["OK, have a good day!"]
 ]
 
