@@ -32,7 +32,7 @@ const APIController = (function() {
         
         const data = await result.json();
         console.log(data);
-        displaySong(data);
+        //displaySong(data);
         return data.tracks;
     }
 
@@ -87,7 +87,7 @@ const UIController = (function() {
 
 const APPController = (function(UICtrl, APICtrl) {
     const DOMInputs = UICtrl.inputField();
-    
+    /*
     DOMInputs.theSong.addEventListener('click', async () => {
         //get the token
         const token = await APICtrl.getToken();           
@@ -98,9 +98,8 @@ const APPController = (function(UICtrl, APICtrl) {
         console.log(song);
         console.log(song[0].name);
         song.forEach(yo => UICtrl.createSong(yo.href, yo.name));
-
     });
-
+    */
     document.addEventListener("DOMContentLoaded", () => {
         const inputField = document.getElementById("input");
         questionCount = 0;
@@ -244,7 +243,7 @@ const APPController = (function(UICtrl, APICtrl) {
 
 })(UIController, APIController);
 
-
+/*
 function displaySong(data) {
     const specificSong = data.specificSong;
     const quoteDiv = document.getElementById("specificSong");
@@ -257,6 +256,7 @@ function displaySong(data) {
   quoteDiv.appendChild(heading);
 
   }
+  */
 // will need to call a method to load the genres on page load
 APPController.init();
 
