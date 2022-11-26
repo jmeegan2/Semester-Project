@@ -103,16 +103,17 @@ const APPController = (function(UICtrl, APICtrl) {
 
     document.addEventListener("DOMContentLoaded", () => {
         const inputField = document.getElementById("input");
-        inputField.addEventListener("keydown", (e) => {
+        inputField.addEventListener("keydown", async (e) => {
           if (e.code === "Enter") {
             let input = inputField.value;
             inputField.value = "";
-            output(input);
+            const token = await APICtrl.getToken();
+            output(input, token);
           }
         });
       });
       
-      function output(input) {
+      async function output(input, token) {
         let product;
       
         // Regex remove non word/space chars
@@ -133,9 +134,11 @@ const APPController = (function(UICtrl, APICtrl) {
           // Search for exact match in `prompts`
           product = compare(prompts, replies, text);
         } else if (text.match(/electronic/gi)) {
-          product = "You chose Genre: Electronic";
+          //product = "You chose Genre: Electronic";
           genresRecommend = "electronic";
-          getRecommendation(genresRecommend);
+          const song = await APICtrl.getRecommendation(token, genresRecommend);
+          console.log(song[0].name);
+          product = song[0].name;
         } else if (text.match(/(corona|covid|virus)/gi)) {
           // If no match, check if message contains `coronavirus`
           product = coronavirus[Math.floor(Math.random() * coronavirus.length)];
