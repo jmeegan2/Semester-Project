@@ -103,17 +103,26 @@ const APPController = (function(UICtrl, APICtrl) {
 
     document.addEventListener("DOMContentLoaded", () => {
         const inputField = document.getElementById("input");
+        questionCount = 0;
         inputField.addEventListener("keydown", async (e) => {
           if (e.code === "Enter") {
             let input = inputField.value;
             inputField.value = "";
-            const token = await APICtrl.getToken();
-            output(input, token);
+            if(questionCount < 5){
+                output(input);
+            }
+            else {
+                const token = await APICtrl.getToken();
+                const song = await APICtrl.getRecommendation(token, genresRecommend);
+                console.log(song[0].name);
+                addChatBotOnly(song[0].name)
+            }    
+            questionCount = questionCount + 1;
           }
         });
       });
       
-      async function output(input, token) {
+      async function output(input) {
         let product;
       
         // Regex remove non word/space chars
@@ -134,11 +143,8 @@ const APPController = (function(UICtrl, APICtrl) {
           // Search for exact match in `prompts`
           product = compare(prompts, replies, text);
         } else if (text.match(/electronic/gi)) {
-          //product = "You chose Genre: Electronic";
+          product = "You chose Genre: Electronic";
           genresRecommend = "electronic";
-          const song = await APICtrl.getRecommendation(token, genresRecommend);
-          console.log(song[0].name);
-          product = song[0].name;
         } else if (text.match(/(corona|covid|virus)/gi)) {
           // If no match, check if message contains `coronavirus`
           product = coronavirus[Math.floor(Math.random() * coronavirus.length)];
