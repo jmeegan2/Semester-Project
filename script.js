@@ -104,6 +104,7 @@ const APPController = (function(UICtrl, APICtrl) {
                 const song = await APICtrl.getRecommendation(token, genresRecommend);
                 console.log(song[0].name);
                 console.log(song[0].external_urls);
+                addImageBotOnly(song[0].album.images[1].url)
                 addChatBotOnly(song[0].name)
                 addChatBotOnly(song[0].external_urls.spotify);
             }    
@@ -133,7 +134,7 @@ const APPController = (function(UICtrl, APICtrl) {
           // Search for exact match in `prompts`
           product = compare(prompts, replies, text);
         } else if (text.match(/(electronic|acoustic|rock|rap|hiphop|classical|country|indie|romance|jazz|soul)/gi)) {
-            product = "You chose Genre: "+text;
+            product = "Your Genre: "+text;
             if(genresRecommend!=null){
               genresRecommend = genresRecommend.concat(",",text);
             }
@@ -224,6 +225,29 @@ const APPController = (function(UICtrl, APICtrl) {
         }, 2000
         )
       
+      }
+      function addImageBotOnly(product) {
+        const messagesContainer = document.getElementById("messages");
+      
+        let botDiv = document.createElement("div");
+        let botImg = document.createElement("img");
+        let botText = document.createElement("img");
+        botDiv.id = "bot";
+        botImg.src = "bot-mini.png";
+        botImg.className = "avatar";
+        botDiv.className = "bot response";
+        botText.innerText = "Typing...";
+        botDiv.appendChild(botText);
+        botDiv.appendChild(botImg);
+        messagesContainer.appendChild(botDiv);
+        // Keep messages at most recent
+        messagesContainer.scrollTop = messagesContainer.scrollHeight - messagesContainer.clientHeight;
+      
+        // Fake delay to seem "real"
+        setTimeout(() => {
+          botText.src = `${product}`;
+        }, 2000
+        )
       }
     
     

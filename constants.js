@@ -7,14 +7,14 @@ const prompts = [
 // Possible responses, in corresponding order
 
 const replies = [
-  ["Ok, lets begin!, What genre would you like? "],
+  ["Ok, lets begin!, What genre do you like? "],
   ["OK, have a good day!"]
 ]
 
 // Random for any other user input
 
 const alternative = [
-  "I'm not sure what you mean.",
+  "Incorrect input",
   "Try again",
   "I don't understand :/"
 ]
