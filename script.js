@@ -71,7 +71,7 @@ const APIController = (function() {
     }
 
     const _getRecommendation = async (token, genresRecommend) => {
-        const limit = 10;
+        const limit = 1;
         
         const result = await fetch(`https://api.spotify.com/v1/recommendations?limit=${limit}&market=ES&seed_genres=${genresRecommend}`, {
             method: 'GET',
@@ -82,7 +82,7 @@ const APIController = (function() {
         
         const data = await result.json();
         console.log(data);
-        
+        //displaySong(data);
         return data.tracks;
     }
 
@@ -311,9 +311,6 @@ const APPController = (function(UICtrl, APICtrl) {
 
 })(UIController, APIController);
 
-
-
-// will need to call a method to load the genres on page load
 APPController.init();
 
 
