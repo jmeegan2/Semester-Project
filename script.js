@@ -31,7 +31,7 @@ const APIController = (function() {
         //displaySong(data);
         return data.tracks;
     }
-
+    
     const _getGenreSeeds = async (token) => {
       const result = await fetch(`https://api.spotify.com/v1/recommendations/available-genre-seeds`, {
           method: 'GET',
@@ -114,22 +114,22 @@ const APPController = (function(UICtrl, APICtrl) {
                 output(input);
             }
             if (1<=questionCount && questionCount < 5) {
-                output(input);
-                const token = await APICtrl.getToken();
-                const song = await APICtrl.getRecommendation(token, genresRecommend);
-                //console.log(song[0].name);
-                //console.log(song[0].external_urls);
-                addImageBotOnly(song[0].album.images[1].url);
-                addChatBotOnly(song[0].name);
-                addChatBotOnly("By: "+song[0].artists[0].name);
-                addLinkBotOnly(song[0].external_urls.spotify);
-                databaseWrite = databaseWrite.concat("Album image: "+song[0].album.images[1].url+"\n");
-                databaseWrite = databaseWrite.concat("Song name: "+song[0].name+"\n");
-                databaseWrite = databaseWrite.concat("Artist name: "+song[0].artists[0].name+"\n");
-                databaseWrite = databaseWrite.concat("Song link: "+song[0].external_urls.spotify+"\n"+"\n");
-                console.log(databaseWrite);
+              output(input);
+              const token = await APICtrl.getToken();
+              const song = await APICtrl.getRecommendation(token, genresRecommend);
+              //console.log(song[0].name);
+              //console.log(song[0].external_urls);
+              addImageBotOnly(song[0].album.images[1].url);
+              addChatBotOnly(song[0].name);
+              addChatBotOnly("By: "+song[0].artists[0].name);
+              addLinkBotOnly(song[0].external_urls.spotify);
+              databaseWrite = databaseWrite.concat("Album image: "+song[0].album.images[1].url+"\n");
+              databaseWrite = databaseWrite.concat("Song name: "+song[0].name+"\n");
+              databaseWrite = databaseWrite.concat("Artist name: "+song[0].artists[0].name+"\n");
+              databaseWrite = databaseWrite.concat("Song link: "+song[0].external_urls.spotify+"\n"+"\n");
+              console.log(databaseWrite);
             }
-             if(questionCount>=5){
+            if(questionCount>=5){
               addChatBotOnly("You've hit the genre limit! Keep pressing enter for more recommendations!");
               const token = await APICtrl.getToken();
               const song = await APICtrl.getRecommendation(token, genresRecommend);
@@ -145,6 +145,7 @@ const APPController = (function(UICtrl, APICtrl) {
               databaseWrite = databaseWrite.concat("Song link: "+song[0].external_urls.spotify+"\n"+"\n");
             }    
             questionCount = questionCount + 1;
+            localStorage.setItem('storage',databaseWrite);
           }
         });
       });
