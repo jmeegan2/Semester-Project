@@ -88,19 +88,7 @@ const UIController = (function() {
 const APPController = (function(UICtrl, APICtrl) {
     const DOMInputs = UICtrl.inputField();
     genresRecommend = null;
-    /*
-    DOMInputs.theSong.addEventListener('click', async () => {
-        //get the token
-        const token = await APICtrl.getToken();           
-        //store the token onto the page
-        //UICtrl.storeToken(token);
-        //const token = UICtrl.getStoredToken().token; 
-        const song = await APICtrl.getRecommendation(token, genresRecommend);
-        console.log(song);
-        console.log(song[0].name);
-        song.forEach(yo => UICtrl.createSong(yo.href, yo.name));
-    });
-    */
+    
     document.addEventListener("DOMContentLoaded", () => {
         const inputField = document.getElementById("input");
         questionCount = 0;
@@ -108,14 +96,16 @@ const APPController = (function(UICtrl, APICtrl) {
           if (e.code === "Enter") {
             let input = inputField.value;
             inputField.value = "";
-            if(questionCount < 5){
+            if(questionCount < 2){
                 output(input);
             }
             else {
                 const token = await APICtrl.getToken();
                 const song = await APICtrl.getRecommendation(token, genresRecommend);
                 console.log(song[0].name);
+                console.log(song[0].external_urls);
                 addChatBotOnly(song[0].name)
+                addChatBotOnly(song[0].external_urls);
             }    
             questionCount = questionCount + 1;
           }
