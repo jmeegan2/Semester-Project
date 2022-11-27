@@ -100,16 +100,18 @@ const APPController = (function(UICtrl, APICtrl) {
             if(questionCount < 2){
                 output(input);
             }
-            else {
+            else if (questionCount >= 2) {
                 const token = await APICtrl.getToken();
                 const song = await APICtrl.getRecommendation(token, genresRecommend);
                 console.log(song[0].name);
                 console.log(song[0].external_urls);
-                addImageBotOnly(song[0].album.images[1].url)
-                addChatBotOnly(song[0].name)
+                addImageBotOnly(song[0].album.images[1].url);
+                addChatBotOnly(song[0].name);
+                addChatBotOnly("By: "+song[0].artists[0].name);
                 addLinkBotOnly(song[0].external_urls.spotify);
                 databaseWrite = databaseWrite.concat("Album image: "+song[0].album.images[1].url+"\n");
                 databaseWrite = databaseWrite.concat("Song name: "+song[0].name+"\n");
+                databaseWrite = databaseWrite.concat("Artist name: "+song[0].artists[0].name+"\n");
                 databaseWrite = databaseWrite.concat("Song link: "+song[0].external_urls.spotify+"\n"+"\n");
                 console.log(databaseWrite);
             }    
