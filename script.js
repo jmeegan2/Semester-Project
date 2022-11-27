@@ -105,7 +105,7 @@ const APPController = (function(UICtrl, APICtrl) {
                 console.log(song[0].name);
                 console.log(song[0].external_urls);
                 addChatBotOnly(song[0].name)
-                addChatBotOnly(song[0].external_urls);
+                addChatBotOnly(song[0].external_urls.spotify);
             }    
             questionCount = questionCount + 1;
           }
