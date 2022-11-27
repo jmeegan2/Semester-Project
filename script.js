@@ -145,7 +145,6 @@ const APPController = (function(UICtrl, APICtrl) {
               databaseWrite = databaseWrite.concat("Song link: "+song[0].external_urls.spotify+"\n"+"\n");
             }    
             questionCount = questionCount + 1;
-            localStorage.setItem('storage',databaseWrite);
           }
         });
       });
@@ -330,8 +329,7 @@ const APPController = (function(UICtrl, APICtrl) {
         }, 10
         )
       }
-    
-    
+      
     return {
         init() {
             console.log('App is starting');
