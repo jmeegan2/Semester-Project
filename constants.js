@@ -20,7 +20,7 @@ const alternative = [
 ]
 //replies to genres
 const genresListReplies = [
-  ["Your Genre: "]
+  ["Added Genre: "]
 ]
 
 //list of genres
