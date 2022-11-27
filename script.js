@@ -100,7 +100,7 @@ const APPController = (function(UICtrl, APICtrl) {
             if(questionCount < 2){
                 output(input);
             }
-            else if (questionCount >= 2) {
+            if (questionCount >= 1) {
                 const token = await APICtrl.getToken();
                 const song = await APICtrl.getRecommendation(token, genresRecommend);
                 console.log(song[0].name);
@@ -239,7 +239,7 @@ const APPController = (function(UICtrl, APICtrl) {
         // Keep messages at most recent
         messagesContainer.scrollTop = messagesContainer.scrollHeight - messagesContainer.clientHeight;
       
-        // Fake delay to seem "real"
+
         setTimeout(() => {
           botText.innerText = `${product}`;
         }, 10
@@ -263,7 +263,7 @@ const APPController = (function(UICtrl, APICtrl) {
         // Keep messages at most recent
         messagesContainer.scrollTop = messagesContainer.scrollHeight - messagesContainer.clientHeight;
       
-        // Fake delay to seem "real"
+
         setTimeout(() => {
           botText.src = `${product}`;
         }, 10
@@ -286,7 +286,7 @@ const APPController = (function(UICtrl, APICtrl) {
         // Keep messages at most recent
         messagesContainer.scrollTop = messagesContainer.scrollHeight - messagesContainer.clientHeight;
       
-        // Fake delay to seem "real"
+
         setTimeout(() => {
           link = product;
           botText.className = "link-button";
