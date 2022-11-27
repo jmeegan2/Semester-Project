@@ -21,20 +21,30 @@ const APIController = (function() {
     }
     
     const _getRecommendation = async (token, genresRecommend) => {
-        // let limit = prompt("Put in a limit amount: ");
         const limit = 1;
         const result = await fetch(`https://api.spotify.com/v1/recommendations?limit=${limit}&market=ES&seed_genres=${genresRecommend}`, {
             method: 'GET',
             headers: { 'Authorization' : 'Bearer ' + token}
         });
-
-            
-        
         const data = await result.json();
         console.log(data);
         //displaySong(data);
         return data.tracks;
     }
+
+    const _getGenreSeeds = async (token) => {
+      const result = await fetch(`https://api.spotify.com/v1/recommendations/available-genre-seeds`, {
+          method: 'GET',
+          headers: { 'Authorization' : 'Bearer ' + token}
+      });
+      const data = await result.json();
+      //console.log(data);
+      //console.log(data.genres);
+      //console.log(data.genres[0]);
+      
+      return data;
+    
+    }  
 
     return {
         getToken() {
@@ -42,7 +52,10 @@ const APIController = (function() {
         },
         getRecommendation(token, genresRecommend){
             return _getRecommendation(token, genresRecommend);
-        }
+        },
+        getGenreSeeds(token){
+          return _getGenreSeeds(token);
+      }
     }
 })();
 
@@ -89,7 +102,7 @@ const APPController = (function(UICtrl, APICtrl) {
     const DOMInputs = UICtrl.inputField();
     genresRecommend = null;
     databaseWrite = null;
-    
+
     document.addEventListener("DOMContentLoaded", () => {
         const inputField = document.getElementById("input");
         questionCount = 0;
@@ -116,7 +129,7 @@ const APPController = (function(UICtrl, APICtrl) {
                 databaseWrite = databaseWrite.concat("Song link: "+song[0].external_urls.spotify+"\n"+"\n");
                 console.log(databaseWrite);
             }
-            else if(questionCount>5){
+             if(questionCount>=5){
               addChatBotOnly("You've hit the genre limit! Keep pressing enter for more recommendations!");
               const token = await APICtrl.getToken();
               const song = await APICtrl.getRecommendation(token, genresRecommend);
@@ -152,24 +165,25 @@ const APPController = (function(UICtrl, APICtrl) {
           .replace(/please /g, "")
           .replace(/ please/g, "")
           .replace(/r u/g, "are you");
-
-        
-        if (compare(prompts, replies, text)) { 
-          // Search for exact match in `prompts`
-          product = compare(prompts, replies, text);
-        } else if (text.match(/(electronic|acoustic|rock|rap|hiphop|classical|country|indie|romance|jazz|soul)/gi)) {
-            product = "Your Genre: "+text;
-            if(genresRecommend!=null){
-              genresRecommend = genresRecommend.concat(",",text);
-            }
-            else{
-              genresRecommend = text;
-            }
-        } 
-        else {
-          // If all else fails: random alternative
-          product = alternative[Math.floor(Math.random() * alternative.length)];
-        }
+          if (compare(prompts, replies, text)) { 
+            // Search for exact match in `prompts`
+            product = compare(prompts, replies, text);
+          } 
+          else {
+            if (compare(genresList, genresListReplies, text)) {
+              product = compare(genresList, genresListReplies, text)+text;
+              if(genresRecommend!=null){
+                genresRecommend = genresRecommend.concat(",",text);
+              }
+              else{
+                genresRecommend = text;
+              }
+            } 
+          } 
+          if(product == null) {
+            // If all else fails: random alternative
+            product = alternative[Math.floor(Math.random() * alternative.length)];
+          }
       
         //stores user input and bot output to write to database for review
         if(databaseWrite!=null){
@@ -182,6 +196,7 @@ const APPController = (function(UICtrl, APICtrl) {
           databaseWrite = databaseWrite.concat("What the bot sees: ",text+"\n");
           databaseWrite = databaseWrite.concat("What the bot outputs: ",product+"\n"+"\n");
         }
+        
         // Update DOM
         addChat(input, product);
         //console.log(databaseWrite);
@@ -319,8 +334,7 @@ const APPController = (function(UICtrl, APICtrl) {
     return {
         init() {
             console.log('App is starting');
-            addChatBotOnly("Hello, I am the Chatbot Song Recommender, would you like song recommendations?");
-            
+            addChatBotOnly("Hello, I am the Chatbot Song Recommender, would you like song recommendations?");           
         }
     }
 
