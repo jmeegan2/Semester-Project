@@ -88,6 +88,7 @@ const UIController = (function() {
 const APPController = (function(UICtrl, APICtrl) {
     const DOMInputs = UICtrl.inputField();
     genresRecommend = null;
+    databaseWrite = null;
     
     document.addEventListener("DOMContentLoaded", () => {
         const inputField = document.getElementById("input");
@@ -107,6 +108,10 @@ const APPController = (function(UICtrl, APICtrl) {
                 addImageBotOnly(song[0].album.images[1].url)
                 addChatBotOnly(song[0].name)
                 addChatBotOnly(song[0].external_urls.spotify);
+                databaseWrite = databaseWrite.concat("Album image: "+song[0].album.images[1].url+"\n");
+                databaseWrite = databaseWrite.concat("Song name: "+song[0].name+"\n");
+                databaseWrite = databaseWrite.concat("Song link: "+song[0].external_urls.spotify+"\n"+"\n");
+                console.log(databaseWrite);
             }    
             questionCount = questionCount + 1;
           }
@@ -129,7 +134,8 @@ const APPController = (function(UICtrl, APICtrl) {
           .replace(/please /g, "")
           .replace(/ please/g, "")
           .replace(/r u/g, "are you");
-      
+
+        
         if (compare(prompts, replies, text)) { 
           // Search for exact match in `prompts`
           product = compare(prompts, replies, text);
@@ -147,8 +153,20 @@ const APPController = (function(UICtrl, APICtrl) {
           product = alternative[Math.floor(Math.random() * alternative.length)];
         }
       
+        //stores user input and bot output to write to database for review
+        if(databaseWrite!=null){
+          databaseWrite = databaseWrite.concat("User input: "+input+"\n");
+          databaseWrite = databaseWrite.concat("What the bot sees: ",text+"\n");
+          databaseWrite = databaseWrite.concat("What the bot outputs: ",product+"\n"+"\n");
+        }
+        else{
+          databaseWrite = "User input: "+input+"\n";
+          databaseWrite = databaseWrite.concat("What the bot sees: ",text+"\n");
+          databaseWrite = databaseWrite.concat("What the bot outputs: ",product+"\n"+"\n");
+        }
         // Update DOM
         addChat(input, product);
+        //console.log(databaseWrite);
       }
       
       function compare(promptsArray, repliesArray, string) {
