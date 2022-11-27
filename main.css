@@ -74,6 +74,7 @@ h1 {
       flex-direction: column;
       overflow: scroll;
       height: 90%;
+      max-height: 350px;
       width: 100%;
       background-color: #343a40;
       padding: 15px;
