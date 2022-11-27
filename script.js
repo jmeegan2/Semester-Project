@@ -307,19 +307,5 @@ const APPController = (function(UICtrl, APICtrl) {
 
 })(UIController, APIController);
 
-/*
-function displaySong(data) {
-    const specificSong = data.specificSong;
-    const quoteDiv = document.getElementById("specificSong");
-  
-
-  const songName = '"'+specificSong+'"';
-  const heading = document.createElement("p");
-
-  heading.innerHTML = songName;
-  quoteDiv.appendChild(heading);
-
-  }
-  */
 APPController.init();
 
