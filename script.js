@@ -108,6 +108,17 @@ const APPController = (function(UICtrl, APICtrl) {
                 addImageBotOnly(song[0].album.images[1].url)
                 addChatBotOnly(song[0].name)
                 addChatBotOnly(song[0].external_urls.spotify);
+                link = song[0].external_urls.spotify;
+                var a = document.createElement('a');
+                var linkText = document.createTextNode("my title text");
+                 a.appendChild(linkText);
+                 a.title = "my title text";
+                 a.href = link;
+                 document.body.appendChild(a);
+
+
+
+
                 addLinkBotOnly(song[0].external_urls.spotify);
                 databaseWrite = databaseWrite.concat("Album image: "+song[0].album.images[1].url+"\n");
                 databaseWrite = databaseWrite.concat("Song name: "+song[0].name+"\n");
