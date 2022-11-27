@@ -97,7 +97,7 @@ const APPController = (function(UICtrl, APICtrl) {
           if (e.code === "Enter") {
             let input = inputField.value;
             inputField.value = "";
-            if(questionCount < 1){
+            if(questionCount < 2){
                 output(input);
             }
             else {
