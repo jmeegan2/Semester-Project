@@ -287,7 +287,9 @@ const APPController = (function(UICtrl, APICtrl) {
         // Fake delay to seem "real"
         setTimeout(() => {
           link = product;
+          botText.className = "link-button";
           botText.type = "button";
+          botText.style="color: white; text-decoration: none;";
           botText.href = link;
           botText.innerText = (`To Song`);
         }, 10
@@ -319,6 +321,5 @@ function displaySong(data) {
 
   }
   */
-// will need to call a method to load the genres on page load
 APPController.init();
 

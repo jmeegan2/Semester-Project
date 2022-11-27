@@ -81,6 +81,18 @@ h1 {
       monospace;
   }
   
+  .link-button {
+    background-color: #187c1b; /* Green */
+    border: none;
+    color: white;
+    padding: 5px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+
+  }
+ 
   .avatar {
       height: 25px;
   }
