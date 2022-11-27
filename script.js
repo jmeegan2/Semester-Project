@@ -2,9 +2,7 @@ const APIController = (function() {
     
     const clientId = 'ef53c75aef224ecfb4561d66af9dbf4d';
     const clientSecret = '26a509250cd74f00b3a490eda8e39fc7';
-    
-    // //test
-    const genresRecommend ='electronic';
+
 
     // private methods
     const _getToken = async () => {
@@ -22,57 +20,9 @@ const APIController = (function() {
         return data.access_token;
     }
     
-    const _getGenres = async (token) => {
-
-        const result = await fetch(`https://api.spotify.com/v1/browse/categories?locale=sv_US`, {
-            method: 'GET',
-            headers: { 'Authorization' : 'Bearer ' + token}
-        });
-
-        const data = await result.json();
-        return data.categories.items;
-    }
-
-    const _getPlaylistByGenre = async (token, genreId) => {
-
-        const limit = 10;
-        
-        const result = await fetch(`https://api.spotify.com/v1/browse/categories/${genreId}/playlists?limit=${limit}`, {
-            method: 'GET',
-            headers: { 'Authorization' : 'Bearer ' + token}
-        });
-
-        const data = await result.json();
-        return data.playlists.items;
-    }
-
-    const _getTracks = async (token, tracksEndPoint) => {
-
-        const limit = 10;
-
-        const result = await fetch(`${tracksEndPoint}?limit=${limit}`, {
-            method: 'GET',
-            headers: { 'Authorization' : 'Bearer ' + token}
-        });
-
-        const data = await result.json();
-        return data.items;
-    }
-
-    const _getTrack = async (token, trackEndPoint) => {
-
-        const result = await fetch(`${trackEndPoint}`, {
-            method: 'GET',
-            headers: { 'Authorization' : 'Bearer ' + token}
-        });
-
-        const data = await result.json();
-        return data;
-    }
-
     const _getRecommendation = async (token, genresRecommend) => {
+        // let limit = prompt("Put in a limit amount: ");
         const limit = 1;
-        
         const result = await fetch(`https://api.spotify.com/v1/recommendations?limit=${limit}&market=ES&seed_genres=${genresRecommend}`, {
             method: 'GET',
             headers: { 'Authorization' : 'Bearer ' + token}
@@ -90,18 +40,6 @@ const APIController = (function() {
         getToken() {
             return _getToken();
         },
-        getGenres(token) {
-            return _getGenres(token);
-        },
-        getPlaylistByGenre(token, genreId) {
-            return _getPlaylistByGenre(token, genreId);
-        },
-        getTracks(token, tracksEndPoint) {
-            return _getTracks(token, tracksEndPoint);
-        },
-        getTrack(token, trackEndPoint) {
-            return _getTrack(token, trackEndPoint);
-        },
         getRecommendation(token, genresRecommend){
             return _getRecommendation(token, genresRecommend);
         }
@@ -111,15 +49,8 @@ const APIController = (function() {
 
 // UI Module
 const UIController = (function() {
-    const genresRecommend ='electronic';
     //object to hold references to html selectors
     const DOMElements = {
-        selectGenre: '#select_genre',
-        selectPlaylist: '#select_playlist',
-        buttonSubmit: '#btn_submit',
-        divSongDetail: '#song-detail',
-        hfToken: '#hidden_token',
-        divSonglist: '.song-list',
         selectedSong: '#selected_song',
     }
 
@@ -134,79 +65,17 @@ const UIController = (function() {
         //method to get input fields
         inputField() {
             return {
-                genre: document.querySelector(DOMElements.selectGenre),
-                playlist: document.querySelector(DOMElements.selectPlaylist),
-                tracks: document.querySelector(DOMElements.divSonglist),
-                submit: document.querySelector(DOMElements.buttonSubmit),
-                songDetail: document.querySelector(DOMElements.divSongDetail),
                 theSong: document.querySelector(DOMElements.selectedSong)
             }
         },
-
-        // need methods to create select list option
-        createGenre(text, value) {
-            const html = `<option value="${value}">${text}</option>`;
-            document.querySelector(DOMElements.selectGenre).insertAdjacentHTML('beforeend', html);
-        }, 
-
-        createPlaylist(text, value) {
-            const html = `<option value="${value}">${text}</option>`;
-            document.querySelector(DOMElements.selectPlaylist).insertAdjacentHTML('beforeend', html);
-        },
-
-        // need method to create a track list group item 
-        createTrack(id, name) {
-            const html = `<a href="#" class="list-group-item list-group-item-action list-group-item-light" id="${id}">${name}</a>`;
-            document.querySelector(DOMElements.divSonglist).insertAdjacentHTML('beforeend', html);
-        },
-
         
         createSong(id, name) {
             const html = `<option value="${id}">${name}</option>`;
             document.querySelector(DOMElements.selectedSong).insertAdjacentHTML('beforeend', html);
         },
-        
-        // need method to create the song detail
-        createTrackDetail(img, title, artist) {
-
-            const detailDiv = document.querySelector(DOMElements.divSongDetail);
-            // any time user clicks a new song, we need to clear out the song detail div
-            detailDiv.innerHTML = '';
-
-            const html = 
-            `
-            <div class="row col-sm-12 px-0">
-                <img src="${img}" alt="">        
-            </div>
-            <div class="row col-sm-12 px-0">
-                <label for="Genre" class="form-label col-sm-12">${title}:</label>
-            </div>
-            <div class="row col-sm-12 px-0">
-                <label for="artist" class="form-label col-sm-12">By ${artist}:</label>
-            </div> 
-            `;
-
-            detailDiv.insertAdjacentHTML('beforeend', html)
-        },
-
-        resetTrackDetail() {
-            this.inputField().songDetail.innerHTML = '';
-        },
-
-        resetTracks() {
-            this.inputField().tracks.innerHTML = '';
-            this.resetTrackDetail();
-        },
-
-        resetPlaylist() {
-            this.inputField().playlist.innerHTML = '';
-            this.resetTracks();
-        },
-        
         storeToken(value) {
             document.querySelector(DOMElements.hfToken).value = value;
         },
-
         getStoredToken() {
             return {
                 token: document.querySelector(DOMElements.hfToken).value
@@ -217,100 +86,226 @@ const UIController = (function() {
 })();
 
 const APPController = (function(UICtrl, APICtrl) {
-    const genresRecommend ='electronic';
-    // get input field object ref
     const DOMInputs = UICtrl.inputField();
-
-    // get genres on page load
-    const loadGenres = async () => {
-        //get the token
-        const token = await APICtrl.getToken();           
-        //store the token onto the page
-        UICtrl.storeToken(token);
-        //get the genres
-        const genres = await APICtrl.getGenres(token);
-        //populate our genres select element
-        genres.forEach(element => UICtrl.createGenre(element.name, element.id));
-    }
-
-   
+    genresRecommend = null;
+    databaseWrite = null;
     
+    document.addEventListener("DOMContentLoaded", () => {
+        const inputField = document.getElementById("input");
+        questionCount = 0;
+        inputField.addEventListener("keydown", async (e) => {
+          if (e.code === "Enter") {
+            let input = inputField.value;
+            inputField.value = "";
+            if(questionCount < 1){
+                output(input);
+            }
+            else {
+                const token = await APICtrl.getToken();
+                const song = await APICtrl.getRecommendation(token, genresRecommend);
+                console.log(song[0].name);
+                console.log(song[0].external_urls);
+                addImageBotOnly(song[0].album.images[1].url)
+                addChatBotOnly(song[0].name)
+                addLinkBotOnly(song[0].external_urls.spotify);
+                databaseWrite = databaseWrite.concat("Album image: "+song[0].album.images[1].url+"\n");
+                databaseWrite = databaseWrite.concat("Song name: "+song[0].name+"\n");
+                databaseWrite = databaseWrite.concat("Song link: "+song[0].external_urls.spotify+"\n"+"\n");
+                console.log(databaseWrite);
+            }    
+            questionCount = questionCount + 1;
+          }
+        });
+      });
+      
+      async function output(input) {
+        let product;
+      
+        // Regex remove non word/space chars
+        // Trim trailing whitespce
+        // Remove digits - not sure if this is best
+        // But solves problem of entering something like 'hi1'
+      
+        let text = input.toLowerCase().replace(/[^\w\s]/gi, "").replace(/[\d]/gi, "").trim();
+        text = text
+          .replace(/ a /g, " ")   // 'tell me a story' -> 'tell me story'
+          .replace(/i feel /g, "")
+          .replace(/whats/g, "what is")
+          .replace(/please /g, "")
+          .replace(/ please/g, "")
+          .replace(/r u/g, "are you");
 
-    //get
-
-    // create genre change event listener
-    DOMInputs.genre.addEventListener('change', async () => {
-        //reset the playlist
-        UICtrl.resetPlaylist();
-        //get the token that's stored on the page
-        const token = UICtrl.getStoredToken().token;        
-        // get the genre select field
-        const genreSelect = UICtrl.inputField().genre;       
-        // get the genre id associated with the selected genre
-        const genreId = genreSelect.options[genreSelect.selectedIndex].value;             
-        // ge the playlist based on a genre
-        const playlist = await APICtrl.getPlaylistByGenre(token, genreId);       
-        // create a playlist list item for every playlist returned
-        playlist.forEach(p => UICtrl.createPlaylist(p.name, p.tracks.href));
-
-    
-    });
-    
-    DOMInputs.theSong.addEventListener('click', async () => {
-        const token = UICtrl.getStoredToken().token; 
-        const song = await APICtrl.getRecommendation(token, genresRecommend);
-        console.log(song);
-        console.log(song[0].name);
-        //song.UICtrl.createSong(song[0].href, song[0].name);
-        song.forEach(yo => UICtrl.createSong(yo.href, yo.name));
-
-    });
-
-    // create submit button click event listener
-    DOMInputs.submit.addEventListener('click', async (e) => {
-        // prevent page reset
-        e.preventDefault();
-        // clear tracks
-        UICtrl.resetTracks();
-        //get the token
-        const token = UICtrl.getStoredToken().token;        
-        // get the playlist field
-        const playlistSelect = UICtrl.inputField().playlist;
-        // get track endpoint based on the selected playlist
-        const tracksEndPoint = playlistSelect.options[playlistSelect.selectedIndex].value;
-        // get the list of tracks
-        const tracks = await APICtrl.getTracks(token, tracksEndPoint);
-        // create a track list item
-        console.log(tracks);
-        tracks.forEach(el => UICtrl.createTrack(el.track.href, el.track.name))
         
-        
-    });
+        if (compare(prompts, replies, text)) { 
+          // Search for exact match in `prompts`
+          product = compare(prompts, replies, text);
+        } else if (text.match(/(electronic|acoustic|rock|rap|hiphop|classical|country|indie|romance|jazz|soul)/gi)) {
+            product = "Your Genre: "+text;
+            if(genresRecommend!=null){
+              genresRecommend = genresRecommend.concat(",",text);
+            }
+            else{
+              genresRecommend = text;
+            }
+        } 
+        else {
+          // If all else fails: random alternative
+          product = alternative[Math.floor(Math.random() * alternative.length)];
+        }
+      
+        //stores user input and bot output to write to database for review
+        if(databaseWrite!=null){
+          databaseWrite = databaseWrite.concat("User input: "+input+"\n");
+          databaseWrite = databaseWrite.concat("What the bot sees: ",text+"\n");
+          databaseWrite = databaseWrite.concat("What the bot outputs: ",product+"\n"+"\n");
+        }
+        else{
+          databaseWrite = "User input: "+input+"\n";
+          databaseWrite = databaseWrite.concat("What the bot sees: ",text+"\n");
+          databaseWrite = databaseWrite.concat("What the bot outputs: ",product+"\n"+"\n");
+        }
+        // Update DOM
+        addChat(input, product);
+        //console.log(databaseWrite);
+      }
+      
+      function compare(promptsArray, repliesArray, string) {
+        let reply;
+        let replyFound = false;
+        for (let x = 0; x < promptsArray.length; x++) {
+          for (let y = 0; y < promptsArray[x].length; y++) {
+            if (promptsArray[x][y] === string) {
+              let replies = repliesArray[x];
+              reply = replies[Math.floor(Math.random() * replies.length)];
+              replyFound = true;
+              // Stop inner loop when input value matches prompts
+              break;
+            }
+          }
+          if (replyFound) {
+            // Stop outer loop when reply is found instead of interating through the entire array
+            break;
+          }
+        }
+        return reply;
+      }
+      
+      function addChat(input, product) {
+        const messagesContainer = document.getElementById("messages");
+      
+        let userDiv = document.createElement("div");
+        userDiv.id = "user";
+        userDiv.className = "user response";
+        userDiv.innerHTML = `<img src="user.png" class="avatar"><span>${input}</span>`;
+        messagesContainer.appendChild(userDiv);
+      
+        let botDiv = document.createElement("div");
+        let botImg = document.createElement("img");
+        let botText = document.createElement("span");
+        botDiv.id = "bot";
+        botImg.src = "bot-mini.png";
+        botImg.className = "avatar";
+        botDiv.className = "bot response";
+        botText.innerText = "Typing...";
+        botDiv.appendChild(botText);
+        botDiv.appendChild(botImg);
+        messagesContainer.appendChild(botDiv);
+        // Keep messages at most recent
+        messagesContainer.scrollTop = messagesContainer.scrollHeight - messagesContainer.clientHeight;
+      
+        // Fake delay to seem "real"
+        setTimeout(() => {
+          botText.innerText = `${product}`;
+        }, 2000
+        )
+      
+      }
+      function addChatBotOnly(product) {
+        const messagesContainer = document.getElementById("messages");
+      
+        let botDiv = document.createElement("div");
+        let botImg = document.createElement("img");
+        let botText = document.createElement("span");
+        botDiv.id = "bot";
+        botImg.src = "bot-mini.png";
+        botImg.className = "avatar";
+        botDiv.className = "bot response";
+        botText.innerText = "Typing...";
+        botDiv.appendChild(botText);
+        botDiv.appendChild(botImg);
+        messagesContainer.appendChild(botDiv);
+        // Keep messages at most recent
+        messagesContainer.scrollTop = messagesContainer.scrollHeight - messagesContainer.clientHeight;
+      
+        // Fake delay to seem "real"
+        setTimeout(() => {
+          botText.innerText = `${product}`;
+        }, 10
+        )
+      
+      }
+      function addImageBotOnly(product) {
+        const messagesContainer = document.getElementById("messages");
+      
+        let botDiv = document.createElement("div");
+        let botImg = document.createElement("img");
+        let botText = document.createElement("img");
+        botDiv.id = "bot";
+        botImg.src = "bot-mini.png";
+        botImg.className = "avatar";
+        botDiv.className = "bot response";
+        botText.innerText = "Typing...";
+        botDiv.appendChild(botText);
+        botDiv.appendChild(botImg);
+        messagesContainer.appendChild(botDiv);
+        // Keep messages at most recent
+        messagesContainer.scrollTop = messagesContainer.scrollHeight - messagesContainer.clientHeight;
+      
+        // Fake delay to seem "real"
+        setTimeout(() => {
+          botText.src = `${product}`;
+        }, 10
+        )
+      }
 
-    // create song selection click event listener
-    DOMInputs.tracks.addEventListener('click', async (e) => {
-        // prevent page reset
-        e.preventDefault();
-        UICtrl.resetTrackDetail();
-        // get the token
-        const token = UICtrl.getStoredToken().token;
-        // get the track endpoint
-        const trackEndpoint = e.target.id;
-        //get the track object
-        const track = await APICtrl.getTrack(token, trackEndpoint);
-        // load the track details
-        UICtrl.createTrackDetail(track.album.images[2].url, track.name, track.artists[0].name);
-    });    
-
+      function addLinkBotOnly(product){
+        const messagesContainer = document.getElementById("messages");
+      
+        let botDiv = document.createElement("div");
+        let botImg = document.createElement("img");
+        let botText = document.createElement("a");
+        botDiv.id = "bot";
+        botImg.src = "bot-mini.png";
+        botImg.className = "avatar";
+        botDiv.className = "bot response";
+        botDiv.appendChild(botText);
+        botDiv.appendChild(botImg);
+        messagesContainer.appendChild(botDiv);
+        // Keep messages at most recent
+        messagesContainer.scrollTop = messagesContainer.scrollHeight - messagesContainer.clientHeight;
+      
+        // Fake delay to seem "real"
+        setTimeout(() => {
+          link = product;
+          botText.className = "link-button";
+          botText.type = "button";
+          botText.style="color: white; text-decoration: none;";
+          botText.href = link;
+          botText.innerText = (`To Song`);
+        }, 10
+        )
+      }
+    
+    
     return {
         init() {
             console.log('App is starting');
-            loadGenres();
+            addChatBotOnly("Hello, I am the Chatbot Song Recommender, would you like song recommendations?");
+            
         }
     }
 
 })(UIController, APIController);
 
 APPController.init();
-
 
