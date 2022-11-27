@@ -64,7 +64,18 @@ h1 {
   ::-webkit-input-placeholder { 
       color: .711 
   }
-   
+  
+  .save_chat {
+    background-color: #ffffff;
+    color: #343a40;
+    padding: 5px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10px;
+    margin-right: auto;
+  }
   input { 
       border: 0; 
       padding: 15px; 
