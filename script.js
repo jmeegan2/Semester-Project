@@ -108,6 +108,7 @@ const APPController = (function(UICtrl, APICtrl) {
                 addImageBotOnly(song[0].album.images[1].url)
                 addChatBotOnly(song[0].name)
                 addChatBotOnly(song[0].external_urls.spotify);
+                addLinkBotOnly(song[0].external_urls.spotify);
                 databaseWrite = databaseWrite.concat("Album image: "+song[0].album.images[1].url+"\n");
                 databaseWrite = databaseWrite.concat("Song name: "+song[0].name+"\n");
                 databaseWrite = databaseWrite.concat("Song link: "+song[0].external_urls.spotify+"\n"+"\n");
@@ -240,7 +241,7 @@ const APPController = (function(UICtrl, APICtrl) {
         // Fake delay to seem "real"
         setTimeout(() => {
           botText.innerText = `${product}`;
-        }, 2000
+        }, 10
         )
       
       }
@@ -264,7 +265,31 @@ const APPController = (function(UICtrl, APICtrl) {
         // Fake delay to seem "real"
         setTimeout(() => {
           botText.src = `${product}`;
-        }, 2000
+        }, 10
+        )
+      }
+
+      function addLinkBotOnly(product){
+        const messagesContainer = document.getElementById("messages");
+      
+        let botDiv = document.createElement("div");
+        let botImg = document.createElement("img");
+        let botText = document.createElement("button");
+        botDiv.id = "bot";
+        botImg.src = "bot-mini.png";
+        botImg.className = "avatar";
+        botDiv.className = "bot response";
+        botText.innerText = "Typing...";
+        botDiv.appendChild(botText);
+        botDiv.appendChild(botImg);
+        messagesContainer.appendChild(botDiv);
+        // Keep messages at most recent
+        messagesContainer.scrollTop = messagesContainer.scrollHeight - messagesContainer.clientHeight;
+      
+        // Fake delay to seem "real"
+        setTimeout(() => {
+          botText.innerText = (`To Song`);
+        }, 10
         )
       }
     
