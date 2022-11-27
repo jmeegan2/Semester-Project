@@ -10,11 +10,12 @@ h1 {
 
 
 #bottomIMG {
-    display: inline-block;
+    display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 45%;
-    max-width: 300px;
+    max-width: 50%;
+    min-width: 300px;
+    height: auto;
 }
 * {
     box-sizing: border-box;
