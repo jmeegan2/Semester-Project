@@ -6,7 +6,7 @@ h1 {
     align-items: center;
     text-align: center;
     margin: 0;
-
+    line-height: 75px;
 }
 
 
@@ -140,6 +140,6 @@ h1 {
       .chat {
           max-width: 85%;
           margin: auto;
-          margin-bottom: 100px;
+          margin-bottom: 200px;
       }
   }
