@@ -138,8 +138,8 @@ h1 {
           justify-content: flex-start;
       }
       .chat {
-          max-width: 45vw;
+          max-width: 85%;
           margin: auto;
-          ;
+          margin-bottom: 100px;
       }
   }
