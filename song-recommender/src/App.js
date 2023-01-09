@@ -1,12 +1,21 @@
-import logo from './logo.svg';
+
 import './App.css';
+
+import { useState, useEffect } from 'react';
+
+export function useThisIsPlainJs() {  
+  
+}
 
 function App() {
   function clickMe() {
     alert("You clicked me!");
   }
+
+  
   return (
     <div className="App">
+      
         {/* <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -24,7 +33,6 @@ function App() {
         <div id="chat" class="chat">
             <div id="messages" class="messages"></div>
             <div id = "sameLine">
-<button onClick={clickMe}>Default</button>;
             <input id="input" type="text" placeholder="Say something..." autocomplete="off" autofocus="true"/>
           </div>
         </div>
